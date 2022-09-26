@@ -2,6 +2,7 @@
 import coldworlds as cw
 import numpy as np
 
+object = ''
 path = ''
 
 path_F1000W = path + 'jw02124-o015_t002_miri_f1000w_i2d.fits'
@@ -41,7 +42,7 @@ ch1_err=np.nan
 ch2=np.nan
 ch2_err=np.nan
 
-cw.get_photometry('0503-5648', path_F1000W, pathF1280W, pathF1800W, path,
+cw.get_photometry(object, path_F1000W, pathF1280W, pathF1800W, path,
                   px_centroids, jmag, jmag_err, hmag, hmag_err, kmag, kmag_err,
                   w1, w1_err, w2, w2_err, w3, w3_err, w4, w4_err,
                   w1_cat, w1_cat_err, w2_cat, w2_cat_err, w3_cat, w3_cat_err,

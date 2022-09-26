@@ -131,15 +131,16 @@ def plot_skysub_image(img_F1000W_skysub, img_F1280W_skysub, img_F1800W_skysub,
                                                            filter_array,
                                                            centroids):
         cax = ax.imshow(img, vmin=vmin, vmax=vmax, origin='lower', cmap=cmap)
-        ax.text(780, 600, filter_label)
+        ax.text(centroids[0]['xcentroid'] - 29, centroids[0]['ycentroid'] + 27,
+                filter_label)
         ax_divider = make_axes_locatable(ax)
         ax.scatter(xy_filter['xcentroid'], xy_filter['ycentroid'],
                    lw=0.5, s=15, marker='o', edgecolors='red',
                    facecolors='red')
         ax.set_xlabel(r'{0}'.format(xlabel))
         ax.set_title(r'{0}'.format(tlabel))
-        ax.set_xlim(xy_filter['xcentroid'] + 30, xy_filter['xcentroid'] - 30)
-        ax.set_ylim(xy_filter['ycentroid'] + 30, xy_filter['ycentroid'] - 30)
+        ax.set_xlim(xy_filter['xcentroid'] - 30, xy_filter['xcentroid'] + 30)
+        ax.set_ylim(xy_filter['ycentroid'] - 30, xy_filter['ycentroid'] + 30)
     axs[0].set_ylabel(r'{0}'.format(ylabel))
     plt.tight_layout()
     plt.savefig(path_output + 'skysub_source.png', dpi=300,
@@ -196,32 +197,32 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
                           results_F1800W['aperture_skysub_ujy'][0]])
 
     J_lam = 1.235
-    J_fzp = 1594
-    J_fzp_err = 27.8
+    J_fzp = 1594 * 1e6
+    J_fzp_err = 27.8 * 1e6
     H_lam = 1.662
-    H_fzp = 1024
-    H_fzp_err = 20
+    H_fzp = 1024 * 1e6
+    H_fzp_err = 20 * 1e6
     K_lam = 2.159
-    K_fzp = 666.7
-    K_fzp_err = 12.6
+    K_fzp = 666.7 * 1e6
+    K_fzp_err = 12.6 * 1e6
     ch1_lam = 3.6
-    ch1_fzp = 280.9
-    ch1_fzp_err = 4.1
+    ch1_fzp = 280.9 * 1e6
+    ch1_fzp_err = 4.1 * 1e6
     ch2_lam = 4.5
-    ch2_fzp = 179.7
-    ch2_fzp_err = 2.6
+    ch2_fzp = 179.7 * 1e6
+    ch2_fzp_err = 2.6 * 1e6
     W1_lam = 3.3526
-    W1_fzp = 306.682
-    W1_fzp_err = 4.6
+    W1_fzp = 306.682 * 1e6
+    W1_fzp_err = 4.6 * 1e6
     W2_lam = 4.6028
-    W2_fzp = 170.663
-    W2_fzp_err = 2.6
+    W2_fzp = 170.663 * 1e6
+    W2_fzp_err = 2.6 * 1e6
     W3_lam = 11.5608
-    W3_fzp = 29.045
-    W3_fzp_err = 0.436
+    W3_fzp = 29.045 * 1e6
+    W3_fzp_err = 0.436 * 1e6
     W4_lam = 22.0883
-    W4_fzp = 8.284
-    W4_fzp_err = 0.124
+    W4_fzp = 8.284 * 1e6
+    W4_fzp_err = 0.124 * 1e6
 
     lam_2mass = np.array([J_lam, H_lam, K_lam])
     mag_2mass = np.array([jmag, hmag, kmag])

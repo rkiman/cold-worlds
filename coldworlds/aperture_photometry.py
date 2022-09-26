@@ -185,6 +185,7 @@ def get_photometry(name, path_F1000W, pathF1280W, pathF1800W, path_output,
     final_table['filter'] = ['F1000W','F1280W','F1800W']
     final_table.write(path_output + 'phot.csv',format='csv',overwrite=True)
 
+
 def subtract_background(img_F1000W_data, img_F1280W_data, img_F1800W_data):
 
     sigma_clip = SigmaClip(sigma=3.0, maxiters=10)
@@ -251,7 +252,7 @@ def get_centroid(img_F1000W_skysub, img_F1280W_skysub, img_F1800W_skysub,
     try:
         assert len(xy_F1000W_tmp) == 1
     except AssertionError as msg:
-        print('Check centroid F1000W, there is more than one object close.')
+        print(f'Check centroid F1000W, there are {len(xy_F1000W_tmp)} objects selected.')
 
     # 5 times the background rms
     threshold_F1280W = 5.0 * sky_F1280W.background_rms_median
@@ -266,22 +267,23 @@ def get_centroid(img_F1000W_skysub, img_F1280W_skysub, img_F1800W_skysub,
     try:
         assert len(xy_F1280W_tmp) == 1
     except AssertionError as msg:
-        print('Check centroid F1280W, there is more than one object close.')
+        print(f'Check centroid F1280W, there are {len(xy_F1280W_tmp)} objects selected.')
 
     # 5 times the background rms
-    threshold_F1800W = 5.0 * sky_F1800W.background_rms_median
+    threshold_F1800W = 4.0 * sky_F1800W.background_rms_median
     # Create DAOStarFinder instance
     dsf_F1800W = photutils.DAOStarFinder(threshold=threshold_F1800W,
                                          fwhm=fwhm_F1800W, exclude_border=True)
     # Run DAOStarFinder on the subtracted image and save the output in a table
     xy_F1800W_tmp = dsf_F1800W(img_F1800W_skysub)
+
     xy_F1800W_tmp = xy_F1800W_tmp[
         np.isclose(xy_F1800W_tmp['xcentroid'], centroid_F1800W[0], rtol=1e-2) *
         np.isclose(xy_F1800W_tmp['ycentroid'], centroid_F1800W[1], rtol=1e-2)]
     try:
         assert len(xy_F1800W_tmp) == 1
     except AssertionError as msg:
-        print('Check centroid F1800W, there is more than one object close.')
+        print(f'Check centroid F1800W, there are {len(xy_F1800W_tmp)} objects selected.')
 
     return xy_F1000W_tmp, xy_F1280W_tmp, xy_F1800W_tmp
 
