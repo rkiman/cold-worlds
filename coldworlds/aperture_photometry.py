@@ -181,6 +181,9 @@ def get_photometry(name, path_F1000W, pathF1280W, pathF1800W, path_output,
              w2_cat, w2_cat_err, w3_cat, w3_cat_err, w4_cat, w4_cat_err,
              ch1, ch1_err, ch2, ch2_err, path_output)
 
+    final_table = vstack([results_F1000W, results_F1280W, results_F1800W])
+    final_table['filter'] = ['F1000W','F1280W','F1800W']
+    final_table.write(path_output + 'phot.csv',format='csv',overwrite=True)
 
 def subtract_background(img_F1000W_data, img_F1280W_data, img_F1800W_data):
 
