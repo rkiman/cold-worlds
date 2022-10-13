@@ -9,6 +9,28 @@ path_F1000W = path + 'jw02124-o015_t002_miri_f1000w_i2d.fits'
 pathF1280W = path + 'jw02124-o015_t002_miri_f1280w_i2d.fits'
 pathF1800W = path + 'jw02124-o015_t002_miri_f1800w_i2d.fits'
 
+data_F1000W = fits.open(path_F1000W)
+data_F1280W = fits.open(path_F1280W)
+data_F1800W = fits.open(path_F1800W)
+
+date_data_F1000W = data_F1000W[0].header['DATE'][:10]
+date_data_F1280W = data_F1280W[0].header['DATE'][:10]
+date_data_F1800W = data_F1800W[0].header['DATE'][:10]
+
+if date_data_F1000W != date_data_F1280W:
+    print('Date F1000W: ' + date_data_F1000W + ' different than date F1280W: '
+          + date_data_F1280W)
+
+if date_data_F1000W != date_data_F1800W:
+    print('Date F1000W: ' + date_data_F1000W + ' different than date F1800W: '
+          + date_data_F1800W)
+
+if date_data_F1280W != date_data_F1800W:
+    print('Date F1280W: ' + date_data_F1280W + ' different than date F1800W: '
+          + date_data_F1800W)
+
+date_data = date_data_F1000W
+
 centroid_F1000W = [753,626]
 centroid_F1280W = [753,626]
 centroid_F1800W = [753,626]
@@ -42,7 +64,7 @@ ch1_err=np.nan
 ch2=np.nan
 ch2_err=np.nan
 
-cw.get_photometry(object, path_F1000W, pathF1280W, pathF1800W, path,
+cw.get_photometry(object, path_F1000W, pathF1280W, pathF1800W, path, date_data,
                   px_centroids, jmag, jmag_err, hmag, hmag_err, kmag, kmag_err,
                   w1, w1_err, w2, w2_err, w3, w3_err, w4, w4_err,
                   w1_cat, w1_cat_err, w2_cat, w2_cat_err, w3_cat, w3_cat_err,

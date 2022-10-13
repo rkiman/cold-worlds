@@ -195,6 +195,9 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
     FuJy_miri = np.array([results_F1000W['aperture_skysub_ujy'][0],
                           results_F1280W['aperture_skysub_ujy'][0],
                           results_F1800W['aperture_skysub_ujy'][0]])
+    FuJy_miri_err = np.array([results_F1000W['aperture_skysub_ujy_err'][0],
+                              results_F1280W['aperture_skysub_ujy_err'][0],
+                              results_F1800W['aperture_skysub_ujy_err'][0]])
 
     J_lam = 1.235
     J_fzp = 1594 * 1e6
@@ -253,7 +256,7 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
     mag_cat_wise = np.array([w1_cat, w2_cat, w3_cat, w4_cat])
     mag_err_cat_wise = np.array([w1_cat_err, w2_cat_err,
                                  w3_cat_err, w4_cat_err])
-    flux_cat_wise, flux_cat_err_wise = get_flux_from_mag(mag_cat_wise,
+    flux_cat_wise, flux_err_cat_wise = get_flux_from_mag(mag_cat_wise,
                                                          mag_err_cat_wise,
                                                          fzp_wise,
                                                          fzp_err_wise)
@@ -264,7 +267,7 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
     literature_phot['mag'] = np.concatenate((mag_2mass,mag_wise,mag_cat_wise,mag_spitzer))
     literature_phot['mag_err'] = np.concatenate((mag_err_2mass,mag_err_wise,mag_err_cat_wise,mag_err_spitzer))
     literature_phot['flux_uJy'] = np.concatenate((flux_2mass,flux_wise,flux_cat_wise,flux_spitzer))
-    literature_phot['flux_err_uJy'] = np.concatenate((flux_err_2mass,flux_err_wise,flux_err_wise,flux_err_spitzer))
+    literature_phot['flux_err_uJy'] = np.concatenate((flux_err_2mass,flux_err_wise,flux_err_cat_wise,flux_err_spitzer))
     literature_phot.write(path_output + 'literature_phot.csv',format='csv',overwrite=True)
 
     plt.figure(figsize=(10, 8))
@@ -284,6 +287,8 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
     flux_all = []
     mask = ~np.isnan(flux_2mass)
     if len(lam_2mass[mask] > 0):
+        plt.errorbar(lam_2mass[mask], flux_2mass[mask],
+                     yerr=flux_err_2mass[mask], color='k', zorder=0, fmt='.')
         plt.scatter(lam_2mass[mask], flux_2mass[mask], color=color1, s=s,
                     edgecolor='k',label='2MASS',zorder=1)
         for x,y in zip(lam_2mass[mask], flux_2mass[mask]):
@@ -291,6 +296,8 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
             flux_all.append(y)
     mask = ~np.isnan(flux_wise)
     if len(lam_wise[mask] > 0):
+        plt.errorbar(lam_wise[mask], flux_wise[mask],
+                     yerr=flux_err_wise[mask], color='k', zorder=0, fmt='.')
         plt.scatter(lam_wise[mask], flux_wise[mask], color=color2, s=s,
                     edgecolor='k', label='WISE',zorder=1)
         for x,y in zip(lam_wise[mask], flux_wise[mask]):
@@ -298,6 +305,8 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
             flux_all.append(y)
     mask = ~np.isnan(flux_cat_wise)
     if len(lam_wise[mask] > 0):
+        plt.errorbar(lam_wise[mask], flux_cat_wise[mask],
+                     yerr=flux_err_cat_wise[mask], color='k', zorder=0, fmt='.')
         plt.scatter(lam_wise[mask], flux_cat_wise[mask], color=color3, s=s,
                     edgecolor='k', label='CatWISE',zorder=1)
         for x,y in zip(lam_wise[mask], flux_cat_wise[mask]):
@@ -305,11 +314,15 @@ def plot_sed(results_F1000W, results_F1280W, results_F1800W,
             flux_all.append(y)
     mask = ~np.isnan(flux_spitzer)
     if len(lam_spitzer[mask]>0):
+        plt.errorbar(lam_spitzer[mask], flux_spitzer[mask],
+                     yerr=flux_err_spitzer[mask], color='k', zorder=0, fmt='.')
         plt.scatter(lam_spitzer[mask], flux_spitzer[mask], color=color4, s=s,
                     edgecolor='k', label='Spitzer',zorder=1)
         for x,y in zip(lam_spitzer[mask], flux_spitzer[mask]):
             lam_all.append(x)
             flux_all.append(y)
+    plt.errorbar(lam_miri, FuJy_miri,
+                     yerr=FuJy_miri_err, color='k', zorder=0, fmt='.')
     plt.scatter(lam_miri, FuJy_miri, color=color5, s=s, edgecolor='k',
                 label='MIRI',zorder=1)
     for x, y in zip(lam_miri, FuJy_miri):

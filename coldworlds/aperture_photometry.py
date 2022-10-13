@@ -30,6 +30,7 @@ from .plots import plot_original_image, plot_skysub_image, plot_choose_ap_radius
 
 
 def get_photometry(name, path_F1000W, pathF1280W, pathF1800W, path_output,
+                   date_data,
                    px_centroids, jmag=np.nan, jmag_err=np.nan,
                    hmag=np.nan, hmag_err=np.nan, kmag=np.nan, kmag_err=np.nan,
                    w1=np.nan, w1_err=np.nan, w2=np.nan, w2_err=np.nan,
@@ -42,7 +43,7 @@ def get_photometry(name, path_F1000W, pathF1280W, pathF1800W, path_output,
     if not os.path.exists(path_output + 'plots/'):
         os.mkdir(path_output + 'plots/')
 
-    path_output = path_output + 'plots/' + name + '_'
+    path_output = path_output + 'plots/' + name + '_' + date_data + '_'
 
     r_array_F1000W = [1.0960273, 1.3812923, 1.6667134, 2.061799, 2.5121834,
                       4.333602, 6.063827]
